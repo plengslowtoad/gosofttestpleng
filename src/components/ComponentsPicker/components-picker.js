@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 
 import { uuid } from '../../utils/uuid';
@@ -7,7 +9,7 @@ import { AvailableComponents } from '../Components';
 
 import './components-picker.css'
 
-export const ComponentsPicker = () => {
+export const ComponentsPicker = ({ lockedPicker }) => {
   const dispatch = useDispatch();
   const onComponentClick = layout => dispatch(componentsActions.addComponent({id: uuid(), layout}));
 
@@ -15,9 +17,11 @@ export const ComponentsPicker = () => {
     <div className="components-picker">
       {AvailableComponents.map(component => (
         <div
-          className="components-picker__component"
+          className={classNames('components-picker__component', {
+            'components-picker__component--disabled': lockedPicker,
+          })}
           key={component.layout}
-          onClick={() => onComponentClick(component.layout)}
+          onClick={() => !lockedPicker && onComponentClick(component.layout)}
         >
           <span className="components-picker__component-label">
             {component.label}
@@ -27,3 +31,7 @@ export const ComponentsPicker = () => {
     </div>
   );
 }
+
+ComponentsPicker.propTypes = {
+  lockedPicker: PropTypes.bool.isRequired,
+};

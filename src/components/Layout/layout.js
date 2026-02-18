@@ -18,7 +18,7 @@ export const Layout = () => {
     <Navbar />
     <div className="d-flex">
       <ComponentsPreview />
-      <ComponentsPicker />
+      <ComponentsPicker lockedPicker={currentlyEdited !== null} />
     </div>
     {currentlyEdited && (
       <EditedComponent
